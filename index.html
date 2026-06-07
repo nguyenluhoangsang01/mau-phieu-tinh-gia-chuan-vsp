@@ -8,6 +8,7 @@
     </title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.10/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.10/vfs_fonts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
       :root {
         --bg: #f5f8f5;
@@ -445,6 +446,29 @@
         color: var(--muted);
         font-size: 13px;
       }
+      .defaultGrid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .defaultItem {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #fbfffc;
+        padding: 10px 12px;
+      }
+      .defaultItem span {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        margin-bottom: 4px;
+      }
+      .defaultItem b {
+        display: block;
+        color: var(--ink);
+        font-size: 14px;
+      }
       footer {
         margin-top: 36px;
         background: #08140d;
@@ -463,6 +487,61 @@
       .footerContact {
         display: grid;
         gap: 7px;
+      }
+      #leadModal {
+        position: fixed;
+        inset: 0;
+        z-index: 999;
+      }
+
+      .modalBackdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(8, 20, 13, 0.58);
+        backdrop-filter: blur(8px);
+      }
+
+      .modalBox {
+        position: relative;
+        width: min(520px, calc(100% - 28px));
+        margin: 8vh auto 0;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        box-shadow: 0 24px 70px rgba(8, 20, 13, 0.25);
+        padding: 24px;
+        z-index: 2;
+      }
+
+      .modalBox h3 {
+        margin: 0 0 8px;
+        color: var(--green2);
+        font-size: 26px;
+        line-height: 1.15;
+      }
+
+      .modalBox p {
+        margin: 0 0 18px;
+        color: var(--muted);
+      }
+
+      .modalClose {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        width: 38px;
+        height: 38px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #fff;
+        color: var(--ink);
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .modalBox .btn {
+        width: 100%;
+        margin-top: 10px;
       }
       @media (max-width: 1180px) {
         .heroGrid,
@@ -492,7 +571,8 @@
         }
         .miniGrid,
         .kpis,
-        .twoCols {
+        .twoCols,
+        .defaultGrid {
           grid-template-columns: 1fr;
         }
         table {
@@ -552,7 +632,9 @@
             </p>
           </div>
           <div class="heroStats">
-            <div><b>Dễ tùy chỉnh</b><span>Mã căn, diện tích, giá</span></div>
+            <div>
+              <b>Dễ nhập liệu</b><span>Chỉ cần các thông tin chính</span>
+            </div>
             <div><b>5 phương án</b><span>Đủ nhóm lịch thanh toán</span></div>
             <div><b>300tr</b><span>Đặt cọc có thể chỉnh</span></div>
             <div><b>PDF</b><span>Gửi khách hàng</span></div>
@@ -592,68 +674,29 @@
             </div>
           </div>
           <div class="inputBox">
-            <h4>Thông tin sản phẩm</h4>
+            <h4>Thông tin cần nhập để tính giá</h4>
             <p>
-              Thông tin này giúp phiếu tính giá được cá nhân hóa theo từng mã
-              căn cần tư vấn.
+              Đây là nhóm thông tin chính để hệ thống lập phiếu tính giá. Chỉ
+              cần nhập đủ các giá trị bên dưới là có thể xem kết quả và xuất
+              PDF.
             </p>
             <div class="field">
               <label>Mã căn</label
               ><input
                 id="unitCode"
-                placeholder="Ví dụ: mã căn cần tư vấn"
+                placeholder="Mã căn cần tư vấn"
                 autocomplete="off"
               />
             </div>
-            <div class="twoCols">
-              <div class="field">
-                <label>Diện tích đất (m²)</label
-                ><input
-                  id="landArea"
-                  inputmode="decimal"
-                  placeholder="Ví dụ: 50"
-                  autocomplete="off"
-                />
-              </div>
-              <div class="field">
-                <label>Diện tích xây dựng (m²)</label
-                ><input
-                  id="buildArea"
-                  inputmode="decimal"
-                  placeholder="Ví dụ: 144"
-                  autocomplete="off"
-                />
-              </div>
-            </div>
-            <div class="twoCols">
-              <div class="field">
-                <label>Loại sản phẩm</label
-                ><input
-                  id="productType"
-                  placeholder="Ví dụ: Nhà phố"
-                  autocomplete="off"
-                />
-              </div>
-              <div class="field">
-                <label>Hướng</label
-                ><input
-                  id="direction"
-                  placeholder="Ví dụ: Đông Nam"
-                  autocomplete="off"
-                />
-              </div>
-            </div>
             <div class="field">
-              <label>Đường / lộ giới</label
-              ><input id="road" placeholder="Ví dụ: 13m" autocomplete="off" />
+              <label>Diện tích đất (m²)</label
+              ><input
+                id="landArea"
+                inputmode="decimal"
+                placeholder="Ví dụ: 50"
+                autocomplete="off"
+              />
             </div>
-          </div>
-          <div class="inputBox">
-            <h4>Thông tin giá trị tính toán</h4>
-            <p>
-              Nhập các giá trị cơ sở để hệ thống tự tính giá sau chính sách và
-              tiến độ thanh toán dự kiến.
-            </p>
             <div class="field">
               <label>Giá trị quyền sử dụng đất & thương mại trước VAT</label
               ><input
@@ -674,39 +717,96 @@
                 autocomplete="off"
               />
             </div>
+          </div>
+
+          <div class="inputBox">
+            <h4>Thông tin bổ sung hiển thị trên PDF</h4>
+            <p>
+              Các thông tin này không bắt buộc để tính giá, nhưng sẽ giúp phiếu
+              PDF đầy đủ và chuyên nghiệp hơn khi gửi khách hàng.
+            </p>
             <div class="twoCols">
               <div class="field">
-                <label>Đơn giá giảm trừ VAT đất/m²</label
+                <label>Diện tích xây dựng (m²)</label
                 ><input
-                  class="moneyInput"
-                  id="vatDeductUnit"
-                  inputmode="numeric"
-                  placeholder="Ví dụ: 9.740.326"
+                  id="buildArea"
+                  inputmode="decimal"
+                  placeholder="Ví dụ: 144"
                   autocomplete="off"
                 />
               </div>
               <div class="field">
-                <label>Kinh phí bảo trì</label
+                <label>Loại sản phẩm</label
                 ><input
-                  class="moneyInput"
-                  id="maintenance"
-                  inputmode="numeric"
-                  placeholder="Bỏ trống: tự tính 2%"
+                  id="productType"
+                  placeholder="Ví dụ: Nhà phố"
                   autocomplete="off"
                 />
               </div>
             </div>
             <div class="twoCols">
               <div class="field">
+                <label>Hướng</label
+                ><input
+                  id="direction"
+                  placeholder="Ví dụ: Đông Nam"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="field">
+                <label>Đường / lộ giới</label
+                ><input id="road" placeholder="Ví dụ: 13m" autocomplete="off" />
+              </div>
+            </div>
+          </div>
+
+          <div class="inputBox">
+            <h4>Thông số mặc định / có thể điều chỉnh</h4>
+            <p>
+              Những thông số này đã có giá trị mặc định. Quý Anh/Chị chỉ cần
+              chỉnh khi chính sách thực tế của mã căn có thay đổi.
+            </p>
+            <div class="defaultGrid">
+              <div class="defaultItem">
+                <span>Đơn giá giảm trừ VAT đất</span>
+                <b>Tự áp dụng theo từng phương án</b>
+              </div>
+              <div class="defaultItem">
+                <span>Kinh phí bảo trì</span>
+                <b>Bỏ trống: hệ thống tạm tính 2%</b>
+              </div>
+              <div class="defaultItem">
+                <span>Đặt cọc / ký quỹ</span>
+                <b>Bỏ trống: 300.000.000</b>
+              </div>
+              <div class="defaultItem">
+                <span>Ngày ký hợp đồng mua bán</span>
+                <b>Bỏ trống: sau ngày ký quỹ 15 ngày</b>
+              </div>
+            </div>
+            <div class="twoCols">
+              <div class="field">
+                <label>Kinh phí bảo trì dự kiến</label
+                ><input
+                  class="moneyInput"
+                  id="maintenance"
+                  inputmode="numeric"
+                  placeholder="Tạm tính 2%"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="field">
                 <label>Đặt cọc / ký quỹ</label
                 ><input
                   class="moneyInput"
                   id="deposit"
                   inputmode="numeric"
-                  placeholder="Ví dụ: 300.000.000"
+                  placeholder="300.000.000"
                   autocomplete="off"
                 />
               </div>
+            </div>
+            <div class="twoCols">
               <div class="field">
                 <label>Hạng VinClub</label
                 ><select id="vinclub">
@@ -716,13 +816,13 @@
                   <option value="none">Không áp dụng</option>
                 </select>
               </div>
-            </div>
-            <div class="field">
-              <label>Chiết khấu từ chối bảo lãnh ngân hàng</label
-              ><select id="blnh">
-                <option value="yes">Có áp dụng 0,5%</option>
-                <option value="no">Không áp dụng</option>
-              </select>
+              <div class="field">
+                <label>Chiết khấu từ chối bảo lãnh ngân hàng</label
+                ><select id="blnh">
+                  <option value="yes">Áp 0,5%</option>
+                  <option value="no">Không áp dụng</option>
+                </select>
+              </div>
             </div>
             <div class="twoCols">
               <div class="field">
@@ -753,7 +853,8 @@
         <div class="tabs" id="tabs"></div>
         <div class="kpis">
           <div class="kpi">
-            <span>Giá niêm yết trước VAT & KPBT</span><b id="kpiListPrice">—</b>
+            <span>Giá niêm yết trước VAT và kinh phí bảo trì</span
+            ><b id="kpiListPrice">—</b>
           </div>
           <div class="kpi">
             <span>Giá trị sau chính sách</span><b id="kpiAfterPolicy">—</b>
@@ -785,8 +886,58 @@
         </div>
       </div>
     </footer>
+    <div id="leadModal" style="display: none">
+      <div class="modalBackdrop"></div>
+      <div class="modalBox">
+        <button class="modalClose" id="closeLeadModal" type="button">×</button>
+
+        <h3>Đăng ký nhận phiếu tính giá</h3>
+        <p>
+          Quý Anh/Chị vui lòng để lại thông tin để BTCLAND hỗ trợ tư vấn và xuất
+          phiếu tính giá PDF.
+        </p>
+
+        <div class="field">
+          <label>Họ & Tên</label>
+          <input
+            id="leadName"
+            placeholder="Nhập họ và tên"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="field">
+          <label>Số điện thoại</label>
+          <input
+            id="leadPhone"
+            placeholder="Nhập số điện thoại"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="field">
+          <label>Địa chỉ email</label>
+          <input id="leadEmail" placeholder="Nhập email" autocomplete="off" />
+        </div>
+
+        <div id="leadError" class="error" style="display: none"></div>
+
+        <button class="btn primary" id="submitLeadBtn" type="button">
+          Đăng ký và xuất PDF
+        </button>
+
+        <button class="btn ghost" id="cancelLeadBtn" type="button">Hủy</button>
+      </div>
+    </div>
     <script>
       const $ = (id) => document.getElementById(id);
+      const EMAILJS_PUBLIC_KEY = "0x-epi6Xw0JTcTDf4";
+      const EMAILJS_SERVICE_ID = "service_iouehoj";
+      const EMAILJS_TEMPLATE_ID = "template_1tsmc5x";
+
+      emailjs.init({
+        publicKey: EMAILJS_PUBLIC_KEY,
+      });
       const moneyFmt = new Intl.NumberFormat("vi-VN", {
         style: "currency",
         currency: "VND",
@@ -799,6 +950,7 @@
           name: "Phương án thanh toán chuẩn",
           title: "Lịch thanh toán chuẩn",
           paymentRate: 0.02,
+          vatDeductUnit: 9740326,
           landSecondUsesOriginal: true,
           constructionFirstRate: 0.15,
           constructionStartOffset: 720,
@@ -808,6 +960,7 @@
           name: "Phương án thanh toán sớm",
           title: "Thanh toán sớm",
           paymentRate: 0.18,
+          vatDeductUnit: 9740369,
           landSecondUsesOriginal: true,
           constructionFirstRate: 0.15,
           constructionStartOffset: 720,
@@ -817,6 +970,7 @@
           name: "Phương án vay hỗ trợ lãi suất 24 tháng",
           title: "Lịch thanh toán vay hỗ trợ lãi suất 24 tháng",
           paymentRate: 0.04,
+          vatDeductUnit: 9740326,
           landSecondUsesOriginal: true,
           constructionFirstRate: 0.1,
           constructionStartOffset: 520,
@@ -826,6 +980,7 @@
           name: "Phương án vay hỗ trợ lãi suất 18 tháng",
           title: "Lịch thanh toán vay hỗ trợ lãi suất 18 tháng",
           paymentRate: 0.08,
+          vatDeductUnit: 9740326,
           landSecondUsesOriginal: false,
           constructionFirstRate: 0.1,
           constructionStartOffset: 520,
@@ -835,6 +990,7 @@
           name: "Phương án vay hỗ trợ lãi suất 30 tháng",
           title: "Lịch thanh toán vay hỗ trợ lãi suất 30 tháng",
           paymentRate: 0,
+          vatDeductUnit: 9740326,
           landSecondUsesOriginal: false,
           constructionFirstRate: 0.1,
           constructionStartOffset: 520,
@@ -915,7 +1071,6 @@
         const buildArea = parseDecimal($("buildArea").value);
         const landValue = parseMoney($("landValue").value);
         const constructionBeforeVat = parseMoney($("constructionValue").value);
-        const vatDeductUnit = parseMoney($("vatDeductUnit").value) || 9740326;
         const constructionVat = constructionBeforeVat * 0.1;
         const constructionVatIncluded = constructionBeforeVat + constructionVat;
         const maintenanceInput = parseMoney($("maintenance").value);
@@ -930,7 +1085,6 @@
           road: $("road").value.trim() || "—",
           landValue,
           constructionBeforeVat,
-          vatDeductUnit,
           maintenance,
           deposit,
           depositDate,
@@ -949,7 +1103,7 @@
       }
       function sheetCalc(input, def) {
         const landOriginalVat =
-          (input.landValue - input.landArea * input.vatDeductUnit) * 0.1;
+          (input.landValue - input.landArea * def.vatDeductUnit) * 0.1;
         const listPriceBeforeVatKpbt =
           input.landValue + input.constructionBeforeVat;
         const listedVat = landOriginalVat + input.constructionBeforeVat * 0.1;
@@ -961,8 +1115,7 @@
           : 0;
         const landAfter =
           input.landValue - vinclubDiscount - paymentDiscount - blnhDiscount;
-        const landVat =
-          (landAfter - input.landArea * input.vatDeductUnit) * 0.1;
+        const landVat = (landAfter - input.landArea * def.vatDeductUnit) * 0.1;
         const landAfterVat = landAfter + landVat;
         const constructionVat = input.constructionBeforeVat * 0.1;
         const constructionVatIncluded =
@@ -1475,8 +1628,12 @@
           "contractDate",
         ].forEach((id) => $(id).addEventListener("input", () => updateKPIs()));
         ["pdfBtn", "sidePdfBtn"].forEach((id) =>
-          $(id).addEventListener("click", exportPDF),
+          $(id).addEventListener("click", openLeadModal),
         );
+
+        $("closeLeadModal").addEventListener("click", closeLeadModal);
+        $("cancelLeadBtn").addEventListener("click", closeLeadModal);
+        $("submitLeadBtn").addEventListener("click", submitLeadAndExport);
         $("resetBtn").addEventListener("click", () => {
           [
             "customerName",
@@ -1490,7 +1647,6 @@
             "road",
             "landValue",
             "constructionValue",
-            "vatDeductUnit",
             "maintenance",
             "deposit",
             "depositDate",
@@ -1620,7 +1776,109 @@
           }),
         ]);
       }
-      function exportPDF() {
+      function openLeadModal() {
+        const input = inputData();
+
+        if (!validInput(input)) {
+          alert(
+            "Vui lòng nhập tối thiểu: diện tích đất, giá trị quyền sử dụng đất/thương mại và giá trị xây dựng.",
+          );
+          return;
+        }
+
+        $("leadError").style.display = "none";
+        $("leadError").textContent = "";
+        $("leadModal").style.display = "block";
+      }
+
+      function closeLeadModal() {
+        $("leadModal").style.display = "none";
+      }
+
+      function validEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || "").trim());
+      }
+
+      async function submitLeadAndExport() {
+        const customer = {
+          name: $("leadName").value.trim(),
+          phone: $("leadPhone").value.trim(),
+          email: $("leadEmail").value.trim(),
+          registeredAt: new Date().toLocaleString("vi-VN"),
+        };
+
+        if (!customer.name || !customer.phone || !validEmail(customer.email)) {
+          $("leadError").style.display = "block";
+          $("leadError").textContent =
+            "Vui lòng nhập đầy đủ Họ & Tên, Số điện thoại và Email hợp lệ.";
+          return;
+        }
+
+        const btn = $("submitLeadBtn");
+        btn.disabled = true;
+        btn.textContent = "Đang gửi thông tin...";
+
+        try {
+          await sendLeadEmail(customer);
+          closeLeadModal();
+          exportPDF(customer);
+        } catch (error) {
+          console.error(error);
+          $("leadError").style.display = "block";
+          $("leadError").textContent =
+            "Không gửi được thông tin đăng ký về email. Vui lòng kiểm tra cấu hình EmailJS hoặc kết nối Internet.";
+        } finally {
+          btn.disabled = false;
+          btn.textContent = "Đăng ký và xuất PDF";
+        }
+      }
+
+      function sendLeadEmail(customer) {
+        const input = inputData();
+        const s = sheets()[activeSheetIndex];
+
+        const params = {
+          to_email: "hoangphibtcland@gmail.com",
+          from_name: "BTCLAND VIETNAM",
+
+          customer_name: customer.name,
+          customer_phone: customer.phone,
+          customer_email: customer.email,
+          registered_at: customer.registeredAt,
+
+          pdf_customer_name: input.customer,
+          staff_name: input.staff,
+          staff_phone: input.phone,
+
+          project_name: "Vinhomes Saigon Park",
+          quote_type: "Phiếu tính giá tham khảo",
+          selected_plan: s.def.name,
+
+          unit_code: input.unitCode,
+          product_type: input.productType,
+          land_area: input.landArea ? `${input.landArea} m²` : "—",
+          build_area: input.buildArea ? `${input.buildArea} m²` : "—",
+          direction: input.direction,
+          road: input.road,
+
+          land_value: money(input.landValue),
+          construction_value: money(input.constructionBeforeVat),
+          list_price_before_vat_kpbt: money(s.listPriceBeforeVatKpbt),
+          after_policy_value: money(s.landAfterVat),
+          construction_vat_included: money(s.constructionVatIncluded),
+          total_estimated_value: money(
+            s.landAfterVat + s.constructionVatIncluded + input.maintenance,
+          ),
+
+          deposit: money(input.deposit),
+          maintenance: money(input.maintenance),
+          vinclub: input.vinTier,
+          blnh: input.blnh ? "Có áp dụng 0,5%" : "Không áp dụng",
+        };
+
+        return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
+      }
+      function exportPDF(customer = null) {
         const input = inputData();
         if (!validInput(input)) {
           alert(
@@ -1688,6 +1946,23 @@
             },
             margin: [0, 8, 0, 10],
           },
+          ...(customer
+            ? [
+                pdfTitle("Thông tin khách hàng nhận phiếu tính giá"),
+                makePdfTable(
+                  ["Họ & Tên", "Số điện thoại", "Email", "Thời điểm đăng ký"],
+                  [
+                    [
+                      pdfText(customer.name),
+                      pdfText(customer.phone),
+                      pdfText(customer.email),
+                      pdfText(customer.registeredAt),
+                    ],
+                  ],
+                  [150, 110, 220, "*"],
+                ),
+              ]
+            : []),
         ];
         sheets().forEach((s, idx) => {
           if (idx > 0) content.push({ text: "", pageBreak: "before" });
@@ -1809,13 +2084,33 @@
             color: "#61736a",
           }),
         };
+        function fileSafeName(value) {
+          return String(value || "")
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/đ/g, "d")
+            .replace(/Đ/g, "D")
+            .replace(/[^a-zA-Z0-9_-]+/g, "_")
+            .replace(/^_+|_+$/g, "");
+        }
+
         const code =
           input.unitCode && input.unitCode !== "—"
-            ? input.unitCode.replace(/[^a-zA-Z0-9_-]/g, "_")
-            : "Linh_hoat";
-        pdfMake
-          .createPdf(doc)
-          .download(`BTCLAND_Phieu_Tinh_Gia_Vinhomes_Saigon_Park_${code}.pdf`);
+            ? fileSafeName(input.unitCode)
+            : "Ma_can";
+
+        const customerName =
+          customer && customer.name
+            ? fileSafeName(customer.name)
+            : "Khach_hang";
+
+        const dateCode = new Date()
+          .toLocaleDateString("vi-VN")
+          .replaceAll("/", "-");
+
+        const fileName = `BTCLAND_Vinhomes_Saigon_Park_Phieu_tinh_gia_${code}_${customerName}_${dateCode}.pdf`;
+
+        pdfMake.createPdf(doc).download(fileName);
       }
       init();
     </script>
