@@ -1,0 +1,1823 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      BTCLAND VIETNAM | Phiếu tính giá tham khảo Vinhomes Saigon Park
+    </title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.10/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.10/vfs_fonts.js"></script>
+    <style>
+      :root {
+        --bg: #f5f8f5;
+        --card: #fff;
+        --ink: #143126;
+        --muted: #61736a;
+        --line: #dce9e2;
+        --green: #0e6b42;
+        --green2: #0a4d31;
+        --soft: #eef7f1;
+        --gold: #d7b46a;
+        --shadow: 0 18px 52px rgba(20, 60, 40, 0.1);
+        --radius: 22px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: var(--ink);
+        background: linear-gradient(180deg, #fff 0%, var(--bg) 48%, #fff 100%);
+        line-height: 1.55;
+      }
+      .container {
+        width: min(1420px, calc(100% - 30px));
+        margin: auto;
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        background: rgba(255, 255, 255, 0.94);
+        border-bottom: 1px solid var(--line);
+        backdrop-filter: blur(14px);
+      }
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        padding: 13px 0;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+      }
+      .logo {
+        width: 56px;
+        height: 56px;
+        border-radius: 17px;
+        background: linear-gradient(135deg, var(--green), var(--green2));
+        color: #fff;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        font-weight: 800;
+        font-size: 12px;
+        line-height: 1.05;
+        letter-spacing: 0.05em;
+        box-shadow: 0 10px 24px rgba(10, 77, 49, 0.22);
+      }
+      .brand h1 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+      }
+      .brand p {
+        margin: 3px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .pills {
+        display: flex;
+        gap: 9px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .pill {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 8px 12px;
+        color: var(--muted);
+        font-size: 13px;
+        background: #fff;
+      }
+      .hero {
+        padding: 32px 0 18px;
+      }
+      .heroGrid {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 22px;
+        align-items: stretch;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+      .heroText {
+        padding: 30px;
+      }
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 999px;
+        background: var(--soft);
+        color: var(--green2);
+        padding: 8px 12px;
+        font-weight: 700;
+        font-size: 13px;
+        margin-bottom: 14px;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--green);
+      }
+      h2 {
+        font-size: clamp(32px, 4.8vw, 56px);
+        line-height: 1.02;
+        letter-spacing: -0.04em;
+        margin: 0;
+      }
+      .lead {
+        margin: 17px 0 0;
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.72;
+      }
+      .actions {
+        display: flex;
+        gap: 11px;
+        flex-wrap: wrap;
+        margin-top: 22px;
+      }
+      .btn {
+        border: 0;
+        border-radius: 15px;
+        padding: 13px 17px;
+        font-weight: 700;
+        font-size: 14px;
+        cursor: pointer;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        transition: 0.16s;
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+      .btn:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .primary {
+        background: linear-gradient(135deg, var(--green), var(--green2));
+        color: #fff;
+        box-shadow: 0 16px 30px rgba(14, 107, 66, 0.23);
+      }
+      .ghost {
+        background: #fff;
+        color: var(--ink);
+        border: 1px solid var(--line);
+      }
+      .heroPanel {
+        padding: 28px;
+        color: #fff;
+        min-height: 360px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background:
+          radial-gradient(
+            circle at 20% 0,
+            rgba(215, 180, 106, 0.25),
+            transparent 18rem
+          ),
+          linear-gradient(145deg, #06291c, #0b7f5f 55%, #113626);
+      }
+      .heroPanel h3 {
+        margin: 0;
+        font-size: 32px;
+        line-height: 1.12;
+      }
+      .heroPanel p {
+        color: rgba(255, 255, 255, 0.82);
+      }
+      .heroStats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .heroStats div {
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 16px;
+        padding: 13px;
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .heroStats b {
+        display: block;
+        color: #f6d78e;
+        font-size: 22px;
+      }
+      .heroStats span {
+        color: rgba(255, 255, 255, 0.82);
+        font-size: 12px;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 420px minmax(0, 1fr);
+        gap: 24px;
+        align-items: start;
+        margin-top: 28px;
+      }
+      .inputPanel {
+        position: sticky;
+        top: 92px;
+      }
+      .panelPad,
+      .tableCard {
+        padding: 20px;
+      }
+      .field {
+        margin-bottom: 14px;
+      }
+      .field label {
+        display: block;
+        font-weight: 700;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+      .field input,
+      .field select {
+        width: 100%;
+        height: 58px;
+        border: 1px solid #c8d9cd;
+        border-radius: 16px;
+        background: #fbfffc;
+        color: var(--ink);
+        font:
+          600 16px "Segoe UI",
+          Arial,
+          sans-serif;
+        padding: 0 18px;
+        outline: none;
+      }
+      .field select {
+        appearance: none;
+        padding-right: 50px;
+        background-image: url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9L12 15L18 9' stroke='%23083f2b' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 20px center;
+      }
+      .field input::placeholder {
+        color: #9bb0a3;
+        font-weight: 500;
+      }
+      .field input:focus,
+      .field select:focus {
+        border-color: var(--green);
+        box-shadow: 0 0 0 4px rgba(14, 107, 66, 0.1);
+      }
+      .hint {
+        color: var(--muted);
+        font-size: 13px;
+        margin-top: 6px;
+      }
+      .error {
+        display: none;
+        color: #b42318;
+        font-weight: 700;
+        font-size: 13px;
+        margin-top: 8px;
+      }
+      .twoCols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .miniGrid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 14px;
+      }
+      .mini,
+      .kpi {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 12px;
+        background: #fbfefc;
+      }
+      .mini span,
+      .kpi span {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        margin-bottom: 5px;
+      }
+      .mini b,
+      .kpi b {
+        font-size: 16px;
+      }
+      .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+      .tab {
+        border: 1px solid var(--line);
+        background: #fff;
+        color: var(--ink);
+        border-radius: 999px;
+        padding: 9px 12px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .tab.active {
+        background: var(--green);
+        color: #fff;
+      }
+      .sectionTitle {
+        margin: 28px 0 14px;
+      }
+      .sectionTitle h3 {
+        margin: 0;
+        font-size: 28px;
+      }
+      .sectionTitle p {
+        margin: 7px 0 0;
+        color: var(--muted);
+      }
+      .results {
+        display: grid;
+        gap: 18px;
+      }
+      .kpis {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+      .tableCard h4 {
+        margin: 0 0 5px;
+        font-size: 19px;
+      }
+      .tableCard p {
+        margin: 0 0 12px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .tableWrap {
+        overflow: auto;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        min-width: 860px;
+      }
+      th,
+      td {
+        border-bottom: 1px solid var(--line);
+        padding: 9px 10px;
+        font-size: 13px;
+        vertical-align: top;
+        text-align: left;
+      }
+      th {
+        background: #eff7f2;
+        color: #244332;
+        font-weight: 700;
+      }
+      td.money,
+      th.money {
+        text-align: right;
+        white-space: nowrap;
+      }
+      .good {
+        font-weight: 700;
+        color: var(--green2);
+      }
+      .note {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .groupTitle {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      .groupTitle h3 {
+        margin: 0;
+        font-size: 24px;
+      }
+      .groupTitle span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .sourceFormula {
+        font-size: 12px;
+        color: #789086;
+        margin-top: 4px;
+      }
+      .inputBox {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 14px;
+        margin-bottom: 16px;
+        background: linear-gradient(180deg, #fff, #f7fcf9);
+      }
+      .inputBox h4 {
+        margin: 0 0 6px;
+        color: var(--green2);
+        font-size: 16px;
+      }
+      .inputBox p {
+        margin: 0 0 12px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      footer {
+        margin-top: 36px;
+        background: #08140d;
+        color: #dceee4;
+        padding: 30px 0;
+      }
+      .footerGrid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 18px;
+      }
+      footer p {
+        color: #a7c1b2;
+        margin: 8px 0 0;
+      }
+      .footerContact {
+        display: grid;
+        gap: 7px;
+      }
+      @media (max-width: 1180px) {
+        .heroGrid,
+        .layout,
+        .footerGrid {
+          grid-template-columns: 1fr;
+        }
+        .inputPanel {
+          position: relative;
+          top: auto;
+        }
+        .pills {
+          display: none;
+        }
+        .kpis {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 680px) {
+        .container {
+          width: calc(100% - 20px);
+        }
+        .heroText,
+        .panelPad,
+        .tableCard {
+          padding: 16px;
+        }
+        .miniGrid,
+        .kpis,
+        .twoCols {
+          grid-template-columns: 1fr;
+        }
+        table {
+          min-width: 760px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <div class="brand">
+          <div class="logo">BTC<br />LAND</div>
+          <div>
+            <h1>BTCLAND VIETNAM</h1>
+            <p>Phiếu tính giá tham khảo Vinhomes Saigon Park</p>
+          </div>
+        </div>
+        <div class="pills">
+          <span class="pill">Hotline: 0356.99.01.99</span
+          ><span class="pill">Email: btclandvn1@gmail.com</span
+          ><span class="pill">Số 37, Đường 37, KĐT Vạn Phúc</span>
+        </div>
+      </div>
+    </header>
+    <section class="hero">
+      <div class="container heroGrid">
+        <div class="card heroText">
+          <div class="eyebrow">
+            <span class="dot"></span> Vinhomes Saigon Park · Phiếu tính giá tham
+            khảo
+          </div>
+          <h2>Phiếu tính giá và tiến độ thanh toán</h2>
+          <p class="lead">
+            Nhập thông tin mã căn, giá trị quyền sử dụng đất/thương mại và giá
+            trị xây dựng. Hệ thống sẽ tự lập các phương án thanh toán tham khảo,
+            trình bày rõ ràng để Quý Anh/Chị dễ theo dõi.
+          </p>
+          <div class="actions">
+            <a class="btn primary" href="#report">Xem phiếu tính giá</a
+            ><button class="btn ghost" id="pdfBtn">Xuất PDF đầy đủ</button>
+          </div>
+        </div>
+        <div class="card heroPanel">
+          <div>
+            <div
+              class="eyebrow"
+              style="background: rgba(255, 255, 255, 0.12); color: #fff"
+            >
+              <span class="dot" style="background: #f6d78e"></span> 5 phương án
+            </div>
+            <h3>Dễ tùy chỉnh theo từng mã căn</h3>
+            <p>
+              Quý Anh/Chị có thể nhập thông tin cho từng mã căn. Phiếu PDF sẽ
+              trình bày đầy đủ các phương án thanh toán: chuẩn, thanh toán sớm
+              và vay hỗ trợ lãi suất.
+            </p>
+          </div>
+          <div class="heroStats">
+            <div><b>Dễ tùy chỉnh</b><span>Mã căn, diện tích, giá</span></div>
+            <div><b>5 phương án</b><span>Đủ nhóm lịch thanh toán</span></div>
+            <div><b>300tr</b><span>Đặt cọc có thể chỉnh</span></div>
+            <div><b>PDF</b><span>Gửi khách hàng</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <main class="container layout" id="report">
+      <aside class="card inputPanel">
+        <div class="panelPad">
+          <div class="inputBox">
+            <h4>Thông tin hiển thị trên PDF</h4>
+            <p>Dùng để cá nhân hóa lời chào khi gửi khách hàng.</p>
+            <div class="field">
+              <label>Tên khách hàng</label
+              ><input
+                id="customerName"
+                placeholder="Nhập tên khách hàng"
+                autocomplete="off"
+              />
+            </div>
+            <div class="field">
+              <label>Tên chuyên viên tư vấn</label
+              ><input
+                id="staffName"
+                placeholder="Nhập tên chuyên viên tư vấn"
+                autocomplete="off"
+              />
+            </div>
+            <div class="field">
+              <label>Số điện thoại chuyên viên</label
+              ><input
+                id="staffPhone"
+                placeholder="Nhập số điện thoại tư vấn"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+          <div class="inputBox">
+            <h4>Thông tin sản phẩm</h4>
+            <p>
+              Thông tin này giúp phiếu tính giá được cá nhân hóa theo từng mã
+              căn cần tư vấn.
+            </p>
+            <div class="field">
+              <label>Mã căn</label
+              ><input
+                id="unitCode"
+                placeholder="Ví dụ: mã căn cần tư vấn"
+                autocomplete="off"
+              />
+            </div>
+            <div class="twoCols">
+              <div class="field">
+                <label>Diện tích đất (m²)</label
+                ><input
+                  id="landArea"
+                  inputmode="decimal"
+                  placeholder="Ví dụ: 50"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="field">
+                <label>Diện tích xây dựng (m²)</label
+                ><input
+                  id="buildArea"
+                  inputmode="decimal"
+                  placeholder="Ví dụ: 144"
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="twoCols">
+              <div class="field">
+                <label>Loại sản phẩm</label
+                ><input
+                  id="productType"
+                  placeholder="Ví dụ: Nhà phố"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="field">
+                <label>Hướng</label
+                ><input
+                  id="direction"
+                  placeholder="Ví dụ: Đông Nam"
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="field">
+              <label>Đường / lộ giới</label
+              ><input id="road" placeholder="Ví dụ: 13m" autocomplete="off" />
+            </div>
+          </div>
+          <div class="inputBox">
+            <h4>Thông tin giá trị tính toán</h4>
+            <p>
+              Nhập các giá trị cơ sở để hệ thống tự tính giá sau chính sách và
+              tiến độ thanh toán dự kiến.
+            </p>
+            <div class="field">
+              <label>Giá trị quyền sử dụng đất & thương mại trước VAT</label
+              ><input
+                class="moneyInput"
+                id="landValue"
+                inputmode="numeric"
+                placeholder="Ví dụ: 4.159.676.510"
+                autocomplete="off"
+              />
+            </div>
+            <div class="field">
+              <label>Giá trị xây dựng chưa VAT</label
+              ><input
+                class="moneyInput"
+                id="constructionValue"
+                inputmode="numeric"
+                placeholder="Ví dụ: 1.225.700.000"
+                autocomplete="off"
+              />
+            </div>
+            <div class="twoCols">
+              <div class="field">
+                <label>Đơn giá giảm trừ VAT đất/m²</label
+                ><input
+                  class="moneyInput"
+                  id="vatDeductUnit"
+                  inputmode="numeric"
+                  placeholder="Ví dụ: 9.740.326"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="field">
+                <label>Kinh phí bảo trì</label
+                ><input
+                  class="moneyInput"
+                  id="maintenance"
+                  inputmode="numeric"
+                  placeholder="Bỏ trống: tự tính 2%"
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+            <div class="twoCols">
+              <div class="field">
+                <label>Đặt cọc / ký quỹ</label
+                ><input
+                  class="moneyInput"
+                  id="deposit"
+                  inputmode="numeric"
+                  placeholder="Ví dụ: 300.000.000"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="field">
+                <label>Hạng VinClub</label
+                ><select id="vinclub">
+                  <option value="gold">Gold</option>
+                  <option value="platinum">Platinum</option>
+                  <option value="diamond">Diamond</option>
+                  <option value="none">Không áp dụng</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label>Chiết khấu từ chối bảo lãnh ngân hàng</label
+              ><select id="blnh">
+                <option value="yes">Có áp dụng 0,5%</option>
+                <option value="no">Không áp dụng</option>
+              </select>
+            </div>
+            <div class="twoCols">
+              <div class="field">
+                <label>Ngày ký thỏa thuận ký quỹ</label
+                ><input id="depositDate" type="date" autocomplete="off" />
+              </div>
+              <div class="field">
+                <label>Ngày ký HĐMB dự kiến</label
+                ><input id="contractDate" type="date" autocomplete="off" />
+              </div>
+            </div>
+          </div>
+          <div id="inputError" class="error">
+            Vui lòng nhập tối thiểu: diện tích đất, giá trị quyền sử dụng
+            đất/thương mại và giá trị xây dựng.
+          </div>
+          <div class="miniGrid">
+            <div class="mini"><span>Mã căn</span><b id="miniCode">—</b></div>
+            <div class="mini"><span>Số phương án</span><b>5 phương án</b></div>
+          </div>
+          <div class="actions">
+            <button class="btn primary" id="sidePdfBtn">Xuất PDF đầy đủ</button
+            ><button class="btn ghost" id="resetBtn">Xóa thông tin nhập</button>
+          </div>
+        </div>
+      </aside>
+      <section class="results">
+        <div class="tabs" id="tabs"></div>
+        <div class="kpis">
+          <div class="kpi">
+            <span>Giá niêm yết trước VAT & KPBT</span><b id="kpiListPrice">—</b>
+          </div>
+          <div class="kpi">
+            <span>Giá trị sau chính sách</span><b id="kpiAfterPolicy">—</b>
+          </div>
+          <div class="kpi">
+            <span>Giá trị xây dựng gồm VAT</span><b id="kpiConstruction">—</b>
+          </div>
+          <div class="kpi">
+            <span>Tổng giá trị tạm tính</span><b id="kpiTotal">—</b>
+          </div>
+        </div>
+        <div id="sheetContainer"></div>
+      </section>
+    </main>
+    <footer>
+      <div class="container footerGrid">
+        <div>
+          <h3 style="margin: 0">BTCLAND VIETNAM</h3>
+          <p>
+            Phiếu tính giá dùng để Quý Anh/Chị tham khảo giá trị sản phẩm và
+            tiến độ thanh toán dự kiến; số liệu cần đối chiếu với chính sách bán
+            hàng chính thức tại thời điểm giao dịch.
+          </p>
+        </div>
+        <div class="footerContact">
+          <strong>Thông tin liên hệ</strong><span>Hotline: 0356.99.01.99</span
+          ><span>Email: btclandvn1@gmail.com</span
+          ><span>Địa chỉ: Số 37, Đường 37, KĐT Vạn Phúc</span>
+        </div>
+      </div>
+    </footer>
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const moneyFmt = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+        maximumFractionDigits: 0,
+      });
+      const numFmt = new Intl.NumberFormat("vi-VN");
+      const SHEET_DEFS = [
+        {
+          key: "op1",
+          name: "Phương án thanh toán chuẩn",
+          title: "Lịch thanh toán chuẩn",
+          paymentRate: 0.02,
+          landSecondUsesOriginal: true,
+          constructionFirstRate: 0.15,
+          constructionStartOffset: 720,
+        },
+        {
+          key: "som",
+          name: "Phương án thanh toán sớm",
+          title: "Thanh toán sớm",
+          paymentRate: 0.18,
+          landSecondUsesOriginal: true,
+          constructionFirstRate: 0.15,
+          constructionStartOffset: 720,
+        },
+        {
+          key: "vay24",
+          name: "Phương án vay hỗ trợ lãi suất 24 tháng",
+          title: "Lịch thanh toán vay hỗ trợ lãi suất 24 tháng",
+          paymentRate: 0.04,
+          landSecondUsesOriginal: true,
+          constructionFirstRate: 0.1,
+          constructionStartOffset: 520,
+        },
+        {
+          key: "vay18",
+          name: "Phương án vay hỗ trợ lãi suất 18 tháng",
+          title: "Lịch thanh toán vay hỗ trợ lãi suất 18 tháng",
+          paymentRate: 0.08,
+          landSecondUsesOriginal: false,
+          constructionFirstRate: 0.1,
+          constructionStartOffset: 520,
+        },
+        {
+          key: "vay30",
+          name: "Phương án vay hỗ trợ lãi suất 30 tháng",
+          title: "Lịch thanh toán vay hỗ trợ lãi suất 30 tháng",
+          paymentRate: 0,
+          landSecondUsesOriginal: false,
+          constructionFirstRate: 0.1,
+          constructionStartOffset: 520,
+        },
+      ];
+      const VINCLUB_RATES = {
+        gold: 0.003,
+        platinum: 0.004,
+        diamond: 0.005,
+        none: 0,
+      };
+      let activeSheetIndex = 0;
+      function onlyDigits(v) {
+        return String(v || "").replace(/[^0-9]/g, "");
+      }
+      function parseMoney(v) {
+        return Number(onlyDigits(v)) || 0;
+      }
+      function parseDecimal(v) {
+        return (
+          Number(
+            String(v || "")
+              .replace(",", ".")
+              .replace(/[^0-9.]/g, ""),
+          ) || 0
+        );
+      }
+      function money(v) {
+        return Number.isFinite(v) ? moneyFmt.format(Math.round(v)) : "—";
+      }
+      function pct(v) {
+        return typeof v === "string"
+          ? v
+          : Number.isFinite(v)
+            ? (Math.round(v * 10000) / 100).toString().replace(".", ",") + "%"
+            : "—";
+      }
+      function friendlyText(v) {
+        return String(v ?? "")
+          .replace(/QSD ĐẤT/g, "quyền sử dụng đất")
+          .replace(/QSD đất/g, "quyền sử dụng đất")
+          .replace(/BĐS/g, "bất động sản")
+          .replace(/KPBT/g, "kinh phí bảo trì")
+          .replace(/CĐT/g, "Chủ đầu tư")
+          .replace(/HĐMB/g, "hợp đồng mua bán")
+          .replace(/KH/g, "Khách hàng")
+          .replace(/SaiGon/g, "Saigon")
+          .replace(/Saigon park/gi, "Saigon Park");
+      }
+      function dateToString(d) {
+        return d instanceof Date && !Number.isNaN(d.getTime())
+          ? d.toLocaleDateString("vi-VN")
+          : "—";
+      }
+      function addDays(d, n) {
+        const x = new Date(d.getTime());
+        x.setDate(x.getDate() + n);
+        return x;
+      }
+      function readDate(id, fallback) {
+        const v = $(id).value;
+        if (v) {
+          const d = new Date(v + "T00:00:00");
+          if (!isNaN(d)) return d;
+        }
+        return fallback;
+      }
+      function formatMoneyInput(el) {
+        const raw = onlyDigits(el.value);
+        el.value = raw ? numFmt.format(Number(raw)) : "";
+      }
+      function inputData() {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const depositDate = readDate("depositDate", today);
+        const contractDate = readDate("contractDate", addDays(depositDate, 15));
+        const landArea = parseDecimal($("landArea").value);
+        const buildArea = parseDecimal($("buildArea").value);
+        const landValue = parseMoney($("landValue").value);
+        const constructionBeforeVat = parseMoney($("constructionValue").value);
+        const vatDeductUnit = parseMoney($("vatDeductUnit").value) || 9740326;
+        const constructionVat = constructionBeforeVat * 0.1;
+        const constructionVatIncluded = constructionBeforeVat + constructionVat;
+        const maintenanceInput = parseMoney($("maintenance").value);
+        const maintenance = maintenanceInput || constructionVatIncluded * 0.02;
+        const deposit = parseMoney($("deposit").value) || 300000000;
+        return {
+          unitCode: $("unitCode").value.trim() || "—",
+          landArea,
+          buildArea,
+          productType: $("productType").value.trim() || "—",
+          direction: $("direction").value.trim() || "—",
+          road: $("road").value.trim() || "—",
+          landValue,
+          constructionBeforeVat,
+          vatDeductUnit,
+          maintenance,
+          deposit,
+          depositDate,
+          contractDate,
+          customer: $("customerName").value.trim() || "Quý Anh/Chị khách hàng",
+          staff: $("staffName").value.trim() || "Chuyên viên tư vấn BTCLAND",
+          phone: $("staffPhone").value.trim() || "0356.99.01.99",
+          vinRate: VINCLUB_RATES[$("vinclub").value] || 0,
+          vinTier:
+            $("vinclub").selectedOptions[0]?.textContent || "Không áp dụng",
+          blnh: $("blnh").value === "yes",
+        };
+      }
+      function validInput(x) {
+        return x.landArea > 0 && x.landValue > 0 && x.constructionBeforeVat > 0;
+      }
+      function sheetCalc(input, def) {
+        const landOriginalVat =
+          (input.landValue - input.landArea * input.vatDeductUnit) * 0.1;
+        const listPriceBeforeVatKpbt =
+          input.landValue + input.constructionBeforeVat;
+        const listedVat = landOriginalVat + input.constructionBeforeVat * 0.1;
+        const vinclubDiscount = input.landValue * (input.vinRate / 2);
+        const paymentDiscount =
+          (input.landValue - vinclubDiscount) * def.paymentRate;
+        const blnhDiscount = input.blnh
+          ? (input.landValue - vinclubDiscount - paymentDiscount) * 0.005
+          : 0;
+        const landAfter =
+          input.landValue - vinclubDiscount - paymentDiscount - blnhDiscount;
+        const landVat =
+          (landAfter - input.landArea * input.vatDeductUnit) * 0.1;
+        const landAfterVat = landAfter + landVat;
+        const constructionVat = input.constructionBeforeVat * 0.1;
+        const constructionVatIncluded =
+          input.constructionBeforeVat + constructionVat;
+        const details = [
+          {
+            label: "Giá trị VAT niêm yết",
+            rate: null,
+            value: listedVat,
+            note: "VAT của quyền sử dụng đất/thương mại và giá trị xây dựng",
+          },
+          {
+            label: "Giá trị quyền sử dụng đất và thương mại trước VAT",
+            rate: null,
+            value: input.landValue,
+          },
+          {
+            label: "VAT quyền sử dụng đất và thương mại trước chính sách",
+            rate: null,
+            value: landOriginalVat,
+          },
+          {
+            label: `Ưu đãi VinClub (${input.vinTier})`,
+            rate: input.vinRate / 2,
+            value: vinclubDiscount,
+            note: "50% phần ưu đãi VinClub được trừ vào giá bán",
+          },
+          {
+            label: "Chiết khấu theo phương thức thanh toán",
+            rate: def.paymentRate,
+            value: paymentDiscount,
+          },
+          {
+            label: "Chiết khấu từ chối bảo lãnh ngân hàng",
+            rate: input.blnh ? 0.005 : 0,
+            value: blnhDiscount,
+          },
+          {
+            label:
+              "Giá trị quyền sử dụng đất và thương mại chưa VAT sau chính sách",
+            rate: null,
+            value: landAfter,
+          },
+          { label: "VAT tạm tính sau chính sách", rate: null, value: landVat },
+          {
+            label:
+              "Giá trị quyền sử dụng đất và thương mại gồm VAT sau chính sách",
+            rate: null,
+            value: landAfterVat,
+          },
+        ];
+        const constructionSummary = [
+          {
+            label: "Giá trị xây dựng chưa VAT",
+            rate: null,
+            value: input.constructionBeforeVat,
+          },
+          { label: "VAT tạm tính", rate: 0.1, value: constructionVat },
+          {
+            label: "Tổng giá trị xây dựng gồm VAT",
+            rate: null,
+            value: constructionVatIncluded,
+          },
+          { label: "Kinh phí bảo trì", rate: null, value: input.maintenance },
+        ];
+        return {
+          def,
+          landOriginalVat,
+          listPriceBeforeVatKpbt,
+          listedVat,
+          vinclubDiscount,
+          paymentDiscount,
+          blnhDiscount,
+          landAfter,
+          landVat,
+          landAfterVat,
+          constructionVat,
+          constructionVatIncluded,
+          details,
+          constructionSummary,
+          landRows: landSchedule(input, def, landAfter, landVat),
+          constructionRows: constructionSchedule(
+            input,
+            def,
+            constructionVatIncluded,
+            constructionVat,
+          ),
+        };
+      }
+      function row(
+        round,
+        deadline,
+        rate,
+        beforeVat,
+        vat,
+        total,
+        date,
+        note = "",
+      ) {
+        return { round, deadline, rate, beforeVat, vat, total, date, note };
+      }
+      function landSchedule(input, def, landAfter, landVat) {
+        const originalBaseForSecond = def.landSecondUsesOriginal
+          ? input.landValue
+          : landAfter;
+        const deposit = input.deposit;
+        const d0 = input.depositDate;
+        const d = input.contractDate;
+        const second = originalBaseForSecond * 0.1 - deposit;
+        const rows = [];
+        rows.push(
+          row(
+            1,
+            "Ký thỏa thuận ký quỹ / đặt cọc",
+            "Đặt cọc",
+            null,
+            null,
+            deposit,
+            d0,
+            "Khoản đặt cọc được khấu trừ vào đợt thanh toán tiếp theo",
+          ),
+        );
+        rows.push(
+          row(
+            "",
+            "10 ngày sau kể từ ngày ký quỹ",
+            0.1,
+            null,
+            null,
+            second,
+            addDays(d0, 10),
+            "Thanh toán theo thỏa thuận ký quỹ",
+          ),
+        );
+        rows.push(
+          row(
+            2,
+            "Ký hợp đồng mua bán dự kiến",
+            0.1,
+            landAfter * 0.1,
+            landVat * 0.1,
+            landAfter * 0.1 + landVat * 0.1 - deposit - second,
+            d,
+            "Trừ phần tiền ký quỹ đã thanh toán",
+          ),
+        );
+        rows.push(
+          row(
+            "",
+            "Khoản đảm bảo thực hiện hợp đồng mua bán",
+            0.05,
+            landAfter * 0.05,
+            null,
+            landAfter * 0.05,
+            null,
+            "Chủ đầu tư trả lãi theo chính sách trên khoản đảm bảo thực hiện hợp đồng mua bán",
+          ),
+        );
+        if (def.key === "som") {
+          rows.push(
+            row(
+              3,
+              "D+15 ngày",
+              0.85,
+              landAfter * 0.85,
+              landVat * 0.85,
+              landAfter * 0.85 + landVat * 0.85,
+              addDays(d, 15),
+              "Thanh toán phần còn lại theo lịch thanh toán sớm",
+            ),
+          );
+          rows.push(
+            row(
+              4,
+              "Theo thông báo bàn giao nhà ở hoặc thỏa thuận khác với Chủ đầu tư",
+              "—",
+              null,
+              null,
+              0,
+              null,
+              "Thông tin theo chính sách thanh toán dự kiến",
+            ),
+          );
+          rows.push(
+            row(
+              "",
+              "VAT đợt nhận sổ",
+              0.05,
+              null,
+              landVat * 0.05,
+              landVat * 0.05,
+              null,
+              "VAT phần quyền sử dụng đất và thương mại",
+            ),
+          );
+        } else if (def.key === "op1") {
+          [
+            [3, "D+15 ngày", 15, 0.15],
+            [4, "D+60 ngày", 60, 0.15],
+            [5, "D+120 ngày", 120, 0.15],
+            [6, "D+180 ngày", 180, 0.15],
+            [
+              7,
+              "Theo thông báo bàn giao nhà ở hoặc thỏa thuận khác với Chủ đầu tư",
+              260,
+              0.25,
+            ],
+          ].forEach(([roundNum, label, days, rate]) =>
+            rows.push(
+              row(
+                roundNum,
+                label,
+                rate,
+                landAfter * rate,
+                landVat * rate,
+                landAfter * rate + landVat * rate,
+                addDays(d, days),
+                "",
+              ),
+            ),
+          );
+          rows.push(
+            row(
+              "",
+              "VAT đợt cuối",
+              0.05,
+              null,
+              landVat * 0.05,
+              landVat * 0.05,
+              null,
+              "VAT phần quyền sử dụng đất và thương mại",
+            ),
+          );
+        } else {
+          rows.push(
+            row(
+              4,
+              "D+15 ngày",
+              0.7,
+              landAfter * 0.7,
+              landVat * 0.7,
+              landAfter * 0.7 + landVat * 0.7,
+              addDays(d, 15),
+              `Ngân hàng giải ngân 70%, phương án ${def.name}`,
+            ),
+          );
+          rows.push(
+            row(
+              "",
+              "D+14 ngày",
+              0.15,
+              landAfter * 0.15,
+              landVat * 0.15,
+              landAfter * 0.15 + landVat * 0.15,
+              addDays(d, 14),
+              "Vốn tự có của khách hàng",
+            ),
+          );
+          rows.push(
+            row(
+              5,
+              "Theo thông báo bàn giao nhà ở hoặc thỏa thuận khác với Chủ đầu tư",
+              "—",
+              null,
+              null,
+              0,
+              null,
+              "Thông tin theo chính sách thanh toán dự kiến",
+            ),
+          );
+          rows.push(
+            row(
+              "",
+              "VAT đợt cuối",
+              0.05,
+              null,
+              landVat * 0.05,
+              landVat * 0.05,
+              null,
+              "VAT phần quyền sử dụng đất và thương mại",
+            ),
+          );
+        }
+        rows.push(
+          row(
+            "Tổng",
+            "Tổng giá trị quyền sử dụng đất và thương mại gồm VAT sau chính sách",
+            "Tổng",
+            null,
+            null,
+            landAfter + landVat,
+            null,
+            "",
+          ),
+        );
+        return rows;
+      }
+      function constructionSchedule(
+        input,
+        def,
+        constructionVatIncluded,
+        constructionVat,
+      ) {
+        const start = addDays(input.contractDate, def.constructionStartOffset);
+        const cBefore = input.constructionBeforeVat;
+        const rows = [];
+        rows.push(
+          row(
+            1,
+            def.constructionStartOffset === 720
+              ? "T = D+540 ngày theo nhóm lịch chuẩn/sớm"
+              : "D+540 ngày theo nhóm lịch vay",
+            def.constructionFirstRate,
+            null,
+            null,
+            constructionVatIncluded * def.constructionFirstRate,
+            start,
+            "Thanh toán giá trị xây dựng gồm VAT",
+          ),
+        );
+        rows.push(
+          row(
+            "",
+            "Khoản đảm bảo thực hiện hợp đồng mua bán phần xây dựng",
+            0.05,
+            cBefore * 0.05,
+            null,
+            cBefore * 0.05,
+            null,
+            "Chủ đầu tư trả lãi theo chính sách trên khoản đảm bảo",
+          ),
+        );
+        [
+          [2, "T+15 ngày", 15, 0.1],
+          [3, "T+60 ngày", 60, 0.15],
+          [4, "T+120 ngày", 120, 0.15],
+          [5, "T+180 ngày", 180, 0.15],
+          [6, "Thu theo thông báo bàn giao của Chủ đầu tư", null, 0.25],
+        ].forEach(([r, label, days, rate]) =>
+          rows.push(
+            row(
+              r,
+              label,
+              rate,
+              null,
+              null,
+              constructionVatIncluded * rate,
+              days === null ? null : addDays(start, days),
+              days === null ? "Trước khi nhận nhà" : "",
+            ),
+          ),
+        );
+        rows.push(
+          row(
+            "",
+            "Kinh phí bảo trì",
+            "—",
+            null,
+            null,
+            input.maintenance,
+            null,
+            "Theo thông tin nhập hoặc tạm tính 2%",
+          ),
+        );
+        rows.push(
+          row(
+            "",
+            "VAT đợt cuối",
+            0.05,
+            null,
+            constructionVat * 0.05,
+            constructionVat * 0.05,
+            null,
+            "VAT phần xây dựng",
+          ),
+        );
+        rows.push(
+          row(
+            "Tổng",
+            "Tổng giá trị xây dựng gồm VAT và kinh phí bảo trì",
+            "Tổng",
+            null,
+            null,
+            constructionVatIncluded + input.maintenance,
+            null,
+            "",
+          ),
+        );
+        rows.push(
+          row(
+            "Tổng",
+            "Tổng giá trị bất động sản tạm tính gồm VAT và kinh phí bảo trì",
+            "Tổng",
+            null,
+            null,
+            null,
+            null,
+            "Tổng = phần đất/thương mại sau chính sách + phần xây dựng",
+          ),
+        );
+        return rows;
+      }
+      function sheets() {
+        const x = inputData();
+        return SHEET_DEFS.map((def) => sheetCalc(x, def));
+      }
+      function safeValue(v) {
+        return v === null || v === undefined || v === "" ? "—" : v;
+      }
+      function td(v, cls = "") {
+        return `<td class="${cls}">${safeValue(v)}</td>`;
+      }
+      function renderTable(headers, rows) {
+        return `<div class="tableWrap"><table><thead><tr>${headers.map((h) => (typeof h === "string" ? `<th>${h}</th>` : `<th class="${h.class || ""}">${h.label}</th>`)).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table></div>`;
+      }
+      function valueByLabel(label, value) {
+        return typeof value === "number" ? money(value) : safeValue(value);
+      }
+      function renderScheduleRows(rows) {
+        return rows
+          .map(
+            (r) =>
+              `<tr>${td(r.round)}${td(friendlyText(r.deadline))}${td(pct(r.rate))}${td(r.beforeVat ? money(r.beforeVat) : "—", "money")}${td(r.vat ? money(r.vat) : "—", "money")}${td(r.total !== null && r.total !== undefined ? money(r.total) : "—", "money")}${td(dateToString(r.date))}${td(friendlyText(r.note))}</tr>`,
+          )
+          .join("");
+      }
+      function renderSheet(index) {
+        const s = sheets()[index],
+          input = inputData();
+        const productRows = [
+          `<tr>${td("Mã căn")} ${td(input.unitCode)} ${td("Diện tích đất")} ${td(input.landArea ? input.landArea + " m²" : "—")}</tr>`,
+          `<tr>${td("Diện tích xây dựng")} ${td(input.buildArea ? input.buildArea + " m²" : "—")} ${td("Loại sản phẩm")} ${td(friendlyText(input.productType))}</tr>`,
+          `<tr>${td("Hướng")} ${td(input.direction)} ${td("Đường / lộ giới")} ${td(input.road)}</tr>`,
+          `<tr>${td("Giá niêm yết trước VAT và kinh phí bảo trì")} ${td(money(s.listPriceBeforeVatKpbt), "money")} ${td("VAT niêm yết tạm tính")} ${td(money(s.listedVat), "money")}</tr>`,
+        ];
+        const detailRows = s.details.map(
+          (d) =>
+            `<tr>${td(friendlyText(d.label))}${td(d.rate !== null ? pct(d.rate) : friendlyText(d.note || "—"))}${td(money(d.value), "money")}</tr>`,
+        );
+        const constructionSummaryRows = s.constructionSummary.map(
+          (x) =>
+            `<tr>${td(friendlyText(x.label))}${td(x.rate !== null ? pct(x.rate) : "—")}${td(money(x.value), "money")}</tr>`,
+        );
+        const totalLand = s.landAfterVat;
+        const totalConstruction = s.constructionVatIncluded + input.maintenance;
+        return `<div class="card tableCard"><div class="groupTitle"><div><h3>Phương án ${index + 1}: ${friendlyText(s.def.name)}</h3><span>${friendlyText(s.def.title)}</span></div></div><h4>Thông tin sản phẩm</h4>${renderTable([], productRows).replace("<thead><tr></tr></thead>", "")}</div><div class="card tableCard"><h4>Giá trị và chính sách áp dụng</h4><p>Các khoản bên dưới được tính lại từ thông tin Quý Anh/Chị nhập, giúp dễ theo dõi giá trị sau chính sách.</p>${renderTable(["Khoản mục", "Tỷ lệ/Ghi chú", { label: "Giá trị", class: "money" }], detailRows)}</div><div class="card tableCard"><h4>Lịch thanh toán phần quyền sử dụng đất và thương mại</h4>${renderTable(["Đợt", "Thời điểm thanh toán", "Tỷ lệ", "Giá trị chưa VAT", "VAT", "Tổng cộng", "Ngày dự kiến", "Ghi chú"], [renderScheduleRows(s.landRows)])}</div><div class="card tableCard"><h4>Tổng quan giá trị xây dựng</h4>${renderTable(["Khoản mục", "Tỷ lệ", { label: "Giá trị", class: "money" }], constructionSummaryRows)}</div><div class="card tableCard"><h4>Lịch thanh toán phần giá trị xây dựng</h4>${renderTable(["Đợt", "Thời điểm thanh toán", "Tỷ lệ", "Giá trị / trước VAT", "VAT / chi tiết", "Tổng cộng", "Ngày dự kiến", "Ghi chú"], [renderScheduleRows(s.constructionRows.map((r) => (r.deadline && String(r.deadline).includes("Tổng giá trị bất động sản") ? { ...r, total: totalLand + totalConstruction } : r)))])}</div>`;
+      }
+      function updateKPIs(index = activeSheetIndex) {
+        const input = inputData();
+        const all = sheets();
+        const s = all[index];
+        const valid = validInput(input);
+        $("inputError").style.display = valid ? "none" : "block";
+        $("miniCode").textContent = input.unitCode;
+        $("kpiListPrice").textContent = valid
+          ? money(s.listPriceBeforeVatKpbt)
+          : "—";
+        $("kpiAfterPolicy").textContent = valid ? money(s.landAfterVat) : "—";
+        $("kpiConstruction").textContent = valid
+          ? money(s.constructionVatIncluded)
+          : "—";
+        $("kpiTotal").textContent = valid
+          ? money(
+              s.landAfterVat + s.constructionVatIncluded + input.maintenance,
+            )
+          : "—";
+        $("sheetContainer").innerHTML = valid
+          ? renderSheet(index)
+          : `<div class="card tableCard"><h4>Vui lòng nhập dữ liệu</h4><p>Nhập thông tin giá trị ở khung bên trái để hệ thống tự lập phiếu tính giá linh hoạt cho mã căn cần tư vấn.</p></div>`;
+      }
+      function setActive(index) {
+        activeSheetIndex = index;
+        document
+          .querySelectorAll(".tab")
+          .forEach((b, i) => b.classList.toggle("active", i === index));
+        updateKPIs(index);
+      }
+      function init() {
+        const tabs = $("tabs");
+        tabs.innerHTML = SHEET_DEFS.map(
+          (s, i) =>
+            `<button class="tab" data-index="${i}">${i + 1}. ${friendlyText(s.name)}</button>`,
+        ).join("");
+        tabs
+          .querySelectorAll(".tab")
+          .forEach((btn) =>
+            btn.addEventListener("click", () =>
+              setActive(Number(btn.dataset.index)),
+            ),
+          );
+        document.querySelectorAll(".moneyInput").forEach((el) =>
+          el.addEventListener("input", () => {
+            formatMoneyInput(el);
+            updateKPIs();
+          }),
+        );
+        [
+          "customerName",
+          "staffName",
+          "staffPhone",
+          "unitCode",
+          "landArea",
+          "buildArea",
+          "productType",
+          "direction",
+          "road",
+          "vinclub",
+          "blnh",
+          "depositDate",
+          "contractDate",
+        ].forEach((id) => $(id).addEventListener("input", () => updateKPIs()));
+        ["pdfBtn", "sidePdfBtn"].forEach((id) =>
+          $(id).addEventListener("click", exportPDF),
+        );
+        $("resetBtn").addEventListener("click", () => {
+          [
+            "customerName",
+            "staffName",
+            "staffPhone",
+            "unitCode",
+            "landArea",
+            "buildArea",
+            "productType",
+            "direction",
+            "road",
+            "landValue",
+            "constructionValue",
+            "vatDeductUnit",
+            "maintenance",
+            "deposit",
+            "depositDate",
+            "contractDate",
+          ].forEach((id) => ($(id).value = ""));
+          $("vinclub").value = "gold";
+          $("blnh").value = "yes";
+          updateKPIs();
+        });
+        setActive(0);
+      }
+      function pdfText(t, opt = {}) {
+        return {
+          text: friendlyText(t),
+          fontSize: opt.fontSize || 7.3,
+          bold: !!opt.bold,
+          color: opt.color || "#153126",
+          alignment: opt.alignment || "left",
+          margin: opt.margin || [0, 0, 0, 0],
+        };
+      }
+      function pdfMoney(v, opt = {}) {
+        return pdfText(typeof v === "number" ? money(v) : friendlyText(v), {
+          ...opt,
+          alignment: opt.alignment || "right",
+        });
+      }
+      function pdfTh(t) {
+        return {
+          text: friendlyText(t),
+          bold: true,
+          fillColor: "#e7f3ec",
+          color: "#143b2a",
+          fontSize: 7.4,
+        };
+      }
+      function makePdfTable(headers, body, widths) {
+        return {
+          table: {
+            headerRows: headers.length ? 1 : 0,
+            widths,
+            body: headers.length ? [headers.map(pdfTh), ...body] : body,
+            dontBreakRows: false,
+          },
+          layout: {
+            hLineColor: () => "#cfded4",
+            vLineColor: () => "#cfded4",
+            paddingTop: () => 3,
+            paddingBottom: () => 3,
+            paddingLeft: () => 3.5,
+            paddingRight: () => 3.5,
+          },
+          margin: [0, 4, 0, 9],
+        };
+      }
+      function pdfTitle(t) {
+        return {
+          text: friendlyText(t),
+          style: "subTitle",
+          margin: [0, 8, 0, 3],
+        };
+      }
+      function productPdfRows(s, input) {
+        return [
+          [
+            pdfText("Mã căn", { bold: true }),
+            pdfText(input.unitCode),
+            pdfText("Diện tích đất", { bold: true }),
+            pdfText(input.landArea + " m²"),
+          ],
+          [
+            pdfText("Diện tích xây dựng", { bold: true }),
+            pdfText(input.buildArea + " m²"),
+            pdfText("Loại sản phẩm", { bold: true }),
+            pdfText(input.productType),
+          ],
+          [
+            pdfText("Hướng", { bold: true }),
+            pdfText(input.direction),
+            pdfText("Đường / lộ giới", { bold: true }),
+            pdfText(input.road),
+          ],
+          [
+            pdfText("Giá niêm yết trước VAT và kinh phí bảo trì", {
+              bold: true,
+            }),
+            pdfMoney(s.listPriceBeforeVatKpbt),
+            pdfText("VAT niêm yết tạm tính", { bold: true }),
+            pdfMoney(s.listedVat),
+          ],
+        ];
+      }
+      function detailPdfRows(s) {
+        return s.details.map((d) => [
+          pdfText(d.label),
+          pdfText(d.rate !== null ? pct(d.rate) : d.note || "—"),
+          pdfMoney(d.value),
+        ]);
+      }
+      function schedulePdfRows(rows) {
+        return rows.map((r) => [
+          pdfText(r.round, { bold: String(r.round).toLowerCase() === "tổng" }),
+          pdfText(r.deadline, {
+            bold: String(r.round).toLowerCase() === "tổng",
+          }),
+          pdfText(pct(r.rate)),
+          pdfMoney(r.beforeVat),
+          pdfMoney(r.vat),
+          pdfMoney(r.total, {
+            bold: String(r.round).toLowerCase() === "tổng",
+            color:
+              String(r.round).toLowerCase() === "tổng" ? "#0a4d31" : "#153126",
+          }),
+          pdfText(dateToString(r.date)),
+          pdfText(r.note, { fontSize: 6.7 }),
+        ]);
+      }
+      function constructionSummaryPdfRows(s) {
+        return s.constructionSummary.map((x) => [
+          pdfText(x.label),
+          pdfText(x.rate !== null ? pct(x.rate) : "—"),
+          pdfMoney(x.value, {
+            bold: String(x.label).toLowerCase().includes("tổng"),
+            color: String(x.label).toLowerCase().includes("tổng")
+              ? "#0a4d31"
+              : "#153126",
+          }),
+        ]);
+      }
+      function exportPDF() {
+        const input = inputData();
+        if (!validInput(input)) {
+          alert(
+            "Vui lòng nhập tối thiểu: diện tích đất, giá trị quyền sử dụng đất/thương mại và giá trị xây dựng.",
+          );
+          return;
+        }
+        const now = new Date().toLocaleString("vi-VN");
+        const content = [
+          {
+            text: "BTCLAND VIETNAM · Phiếu tính giá tham khảo Vinhomes Saigon Park",
+            style: "title",
+          },
+          { text: `Ngày xuất: ${now}`, style: "small" },
+          {
+            canvas: [
+              {
+                type: "line",
+                x1: 0,
+                y1: 0,
+                x2: 785,
+                y2: 0,
+                lineWidth: 1,
+                lineColor: "#0e6b42",
+              },
+            ],
+            margin: [0, 8, 0, 6],
+          },
+          {
+            text: "Phiếu tính này được lập để Quý Anh/Chị dễ theo dõi giá trị sản phẩm và tiến độ thanh toán dự kiến. Số liệu dùng để tham khảo tư vấn và cần đối chiếu với chính sách bán hàng chính thức tại thời điểm giao dịch.",
+            style: "small",
+            margin: [0, 0, 0, 8],
+          },
+          {
+            table: {
+              widths: ["*"],
+              body: [
+                [
+                  {
+                    stack: [
+                      {
+                        text: `- Chuyên viên tư vấn: ${input.staff}`,
+                        bold: true,
+                        fontSize: 10,
+                        color: "#0a4d31",
+                        margin: [0, 0, 0, 4],
+                      },
+                      {
+                        text: `- Kính gửi Quý Anh/Chị khách hàng ${input.customer}`,
+                        bold: true,
+                        fontSize: 10,
+                        color: "#0a4d31",
+                      },
+                    ],
+                    margin: [8, 6, 8, 6],
+                  },
+                ],
+              ],
+            },
+            layout: {
+              hLineWidth: () => 1.3,
+              vLineWidth: () => 1.3,
+              hLineColor: () => "#e11d48",
+              vLineColor: () => "#e11d48",
+            },
+            margin: [0, 8, 0, 10],
+          },
+        ];
+        sheets().forEach((s, idx) => {
+          if (idx > 0) content.push({ text: "", pageBreak: "before" });
+          const totalLand = s.landAfterVat;
+          const totalConstruction =
+            s.constructionVatIncluded + input.maintenance;
+          const adjustedConstructionRows = s.constructionRows.map((r) =>
+            r.deadline &&
+            String(r.deadline).includes("Tổng giá trị bất động sản")
+              ? { ...r, total: totalLand + totalConstruction }
+              : r,
+          );
+          content.push(
+            {
+              text: `Phương án ${idx + 1}: ${friendlyText(s.def.name)}`,
+              style: "groupTitle",
+            },
+            {
+              text: friendlyText(s.def.title),
+              style: "small",
+              margin: [0, 0, 0, 6],
+            },
+            pdfTitle("Thông tin sản phẩm"),
+            makePdfTable([], productPdfRows(s, input), [120, 180, 110, "*"]),
+            pdfTitle("Giá trị và chính sách áp dụng"),
+            makePdfTable(
+              ["Khoản mục", "Tỷ lệ/Ghi chú", "Giá trị"],
+              detailPdfRows(s),
+              [300, 160, "*"],
+            ),
+            pdfTitle("Lịch thanh toán phần quyền sử dụng đất và thương mại"),
+            makePdfTable(
+              [
+                "Đợt",
+                "Thời điểm thanh toán",
+                "Tỷ lệ",
+                "Giá trị chưa VAT",
+                "VAT",
+                "Tổng cộng",
+                "Ngày dự kiến",
+                "Ghi chú",
+              ],
+              schedulePdfRows(s.landRows),
+              [35, 120, 42, 85, 75, 85, 55, "*"],
+            ),
+            pdfTitle("Tổng quan giá trị xây dựng"),
+            makePdfTable(
+              ["Khoản mục", "Tỷ lệ", "Giá trị"],
+              constructionSummaryPdfRows(s),
+              [300, 70, "*"],
+            ),
+            pdfTitle("Lịch thanh toán phần giá trị xây dựng"),
+            makePdfTable(
+              [
+                "Đợt",
+                "Thời điểm thanh toán",
+                "Tỷ lệ",
+                "Giá trị / trước VAT",
+                "VAT / chi tiết",
+                "Tổng cộng",
+                "Ngày dự kiến",
+                "Ghi chú",
+              ],
+              schedulePdfRows(adjustedConstructionRows),
+              [35, 120, 42, 85, 75, 85, 55, "*"],
+            ),
+          );
+        });
+        content.push(
+          { text: "", pageBreak: "before" },
+          pdfTitle("Lưu ý dành cho khách hàng"),
+          makePdfTable(
+            ["Nội dung", "Diễn giải"],
+            [
+              [
+                pdfText("Mục đích của phiếu tính", { bold: true }),
+                pdfText(
+                  "Bảng tính này hỗ trợ Quý Anh/Chị tham khảo giá trị sản phẩm và tiến độ thanh toán dự kiến.",
+                ),
+              ],
+              [
+                pdfText("Cách tính tham khảo", { bold: true }),
+                pdfText(
+                  "Các giá trị được tính từ thông tin Quý Anh/Chị cung cấp và các phương án thanh toán tham khảo. Vui lòng đối chiếu chính sách chính thức tại thời điểm giao dịch.",
+                ),
+              ],
+              [
+                pdfText("Chính sách bán hàng", { bold: true }),
+                pdfText(
+                  "Các ưu đãi, lịch thanh toán và thời điểm thanh toán cần được xác nhận lại theo chính sách bán hàng chính thức tại thời điểm giao dịch.",
+                ),
+              ],
+              [
+                pdfText("Không phải cam kết", { bold: true }),
+                pdfText(
+                  "Báo cáo không thay thế hợp đồng, phụ lục, thông báo thanh toán hoặc văn bản pháp lý từ Chủ đầu tư.",
+                ),
+              ],
+            ],
+            [160, "*"],
+          ),
+        );
+        const doc = {
+          pageSize: "A4",
+          pageOrientation: "landscape",
+          pageMargins: [24, 24, 24, 28],
+          defaultStyle: { font: "Roboto", fontSize: 7.3, color: "#153126" },
+          styles: {
+            title: { fontSize: 15, bold: true, color: "#0a4d31" },
+            groupTitle: { fontSize: 13, bold: true, color: "#0a4d31" },
+            subTitle: { fontSize: 10.5, bold: true, color: "#0a4d31" },
+            small: { fontSize: 7.5, color: "#61736a" },
+          },
+          content,
+          footer: (currentPage, pageCount) => ({
+            text: `BTCLAND VIETNAM · Vinhomes Saigon Park · Trang ${currentPage}/${pageCount}`,
+            alignment: "center",
+            fontSize: 7,
+            color: "#61736a",
+          }),
+        };
+        const code =
+          input.unitCode && input.unitCode !== "—"
+            ? input.unitCode.replace(/[^a-zA-Z0-9_-]/g, "_")
+            : "Linh_hoat";
+        pdfMake
+          .createPdf(doc)
+          .download(`BTCLAND_Phieu_Tinh_Gia_Vinhomes_Saigon_Park_${code}.pdf`);
+      }
+      init();
+    </script>
+  </body>
+</html>
