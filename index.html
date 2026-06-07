@@ -1878,6 +1878,41 @@
 
         return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
       }
+      function planComparisonPdfRows(input) {
+        const allSheets = sheets();
+
+        const baseTotal =
+          allSheets[0].landAfterVat +
+          allSheets[0].constructionVatIncluded +
+          input.maintenance;
+
+        return allSheets.map((s) => {
+          const total =
+            s.landAfterVat + s.constructionVatIncluded + input.maintenance;
+
+          const diff = total - baseTotal;
+
+          const diffText =
+            diff === 0
+              ? "—"
+              : diff < 0
+                ? `Tiết kiệm ${money(Math.abs(diff))}`
+                : `Tăng ${money(diff)}`;
+
+          return [
+            pdfText(s.def.name, { bold: true }),
+            pdfText(pct(s.def.paymentRate)),
+            pdfMoney(s.landAfterVat),
+            pdfMoney(s.constructionVatIncluded),
+            pdfMoney(input.maintenance),
+            pdfMoney(total, { bold: true, color: "#0a4d31" }),
+            pdfText(diffText, {
+              color: diff < 0 ? "#0a4d31" : diff > 0 ? "#b42318" : "#61736a",
+              bold: diff !== 0,
+            }),
+          ];
+        });
+      }
       function exportPDF(customer = null) {
         const input = inputData();
         if (!validInput(input)) {
@@ -1964,6 +1999,27 @@
               ]
             : []),
         ];
+        content.push(
+          pdfTitle("So sánh nhanh 5 phương án thanh toán"),
+          {
+            text: "Bảng dưới đây giúp Quý Anh/Chị xem nhanh tổng giá trị tạm tính giữa các phương án thanh toán trước khi xem chi tiết từng lịch thanh toán.",
+            style: "small",
+            margin: [0, 0, 0, 6],
+          },
+          makePdfTable(
+            [
+              "Phương án thanh toán",
+              "Ưu đãi theo phương án",
+              "Giá trị đất & thương mại sau chính sách",
+              "Giá trị xây dựng gồm VAT",
+              "Kinh phí bảo trì",
+              "Tổng giá trị tạm tính",
+              "So với phương án chuẩn",
+            ],
+            planComparisonPdfRows(input),
+            [145, 65, 125, 105, 85, 105, "*"],
+          ),
+        );
         sheets().forEach((s, idx) => {
           if (idx > 0) content.push({ text: "", pageBreak: "before" });
           const totalLand = s.landAfterVat;
