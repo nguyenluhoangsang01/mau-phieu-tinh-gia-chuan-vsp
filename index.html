@@ -1742,6 +1742,60 @@
           };
         });
       }
+      function pdfPlans(input) {
+        if (input.product !== "hoanthien") {
+          return allPlans(input);
+        }
+
+        const normalPlans = PLANS.filter((p) => p.key !== "htls70").map(
+          (p) => ({
+            def: p,
+            calc: calcPlan(input, p.key),
+          }),
+        );
+
+        const htls70Plans = ["18T", "24T", "30T"].map((term) => {
+          const termInput = {
+            ...input,
+            term70: term,
+          };
+
+          return {
+            def: {
+              key: `htls70_${term}`,
+              label: `Vay hỗ trợ lãi suất 70% - Gói ${term}`,
+              short: `Vay 70% ${term}`,
+            },
+            calc: calcPlan(termInput, "htls70"),
+            term70: term,
+          };
+        });
+
+        return [...normalPlans, ...htls70Plans];
+      }
+
+      function pdfComparisonRows(input) {
+        const plans = pdfPlans(input);
+        const base = plans[0].calc.total;
+
+        return plans.map((p) => {
+          const diff = p.calc.total - base;
+
+          return {
+            name: p.def.label,
+            rate: pct(p.calc.payRate),
+            before:
+              input.product === "gianxay" ? p.calc.landBefore : p.calc.before,
+            after: p.calc.total,
+            vtc:
+              p.calc.totals.vtc +
+              p.calc.totals.land +
+              p.calc.totals.construction,
+            bank: p.calc.totals.bank,
+            diff,
+          };
+        });
+      }
       function updateRequiredFields() {
         const product = $("productLine").value;
         const isGianXay = product === "gianxay";
@@ -2129,8 +2183,8 @@
           return;
         }
         const now = new Date().toLocaleString("vi-VN");
-        const plans = allPlans(input);
-        const compareRows = comparisonRows(input).map((r) => [
+        const plans = pdfPlans(input);
+        const compareRows = pdfComparisonRows(input).map((r) => [
           pdfText(r.name, { bold: true }),
           pdfText(r.rate),
           pdfMoney(r.before),
@@ -2255,9 +2309,16 @@
             ],
             [120, 180, 120, "*"],
           ),
-          pdfTitle("So sánh nhanh các phương án thanh toán"),
+          pdfTitle(
+            input.product === "hoanthien"
+              ? "So sánh nhanh các phương án thanh toán, bao gồm 3 gói vay 70%"
+              : "So sánh nhanh các phương án thanh toán",
+          ),
           {
-            text: "Bảng dưới đây giúp Quý Anh/Chị xem nhanh tổng giá trị tạm tính giữa các phương án trước khi xem chi tiết từng lịch thanh toán.",
+            text:
+              input.product === "hoanthien"
+                ? "Riêng phương án vay hỗ trợ lãi suất 70%, phiếu tạm tính tách thành 3 gói 18T, 24T và 30T để Quý Anh/Chị dễ so sánh."
+                : "Bảng dưới đây giúp Quý Anh/Chị xem nhanh tổng giá trị tạm tính giữa các phương án trước khi xem chi tiết từng lịch thanh toán.",
             style: "small",
             margin: [0, 0, 0, 6],
           },
@@ -2315,11 +2376,17 @@
                 ];
           content.push(
             {
-              text: `Phương án ${idx + 1}: ${p.def.label}`,
+              text:
+                input.product === "hoanthien" && p.def.key.startsWith("htls70_")
+                  ? `Nhóm vay hỗ trợ lãi suất 70%: ${p.term70}`
+                  : `Phương án ${idx + 1}: ${p.def.label}`,
               style: "groupTitle",
             },
             {
-              text: `Ưu đãi/điều chỉnh: ${pct(c.payRate)} · VinClub: ${input.vinLabel} · Từ chối bảo lãnh: ${input.blnh ? "Có" : "Không"}`,
+              text:
+                input.product === "hoanthien" && p.def.key.startsWith("htls70_")
+                  ? `Gói ${p.term70} · Ưu đãi/điều chỉnh: ${pct(c.payRate)} · VinClub: ${input.vinLabel} · Từ chối bảo lãnh: ${input.blnh ? "Có" : "Không"}`
+                  : `Ưu đãi/điều chỉnh: ${pct(c.payRate)} · VinClub: ${input.vinLabel} · Từ chối bảo lãnh: ${input.blnh ? "Có" : "Không"}`,
               style: "small",
               margin: [0, 0, 0, 6],
             },
